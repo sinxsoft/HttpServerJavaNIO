@@ -15,6 +15,7 @@ import java.util.Set;
 import org.apache.log4j.Logger;
 
 import com.henrik.http.handler.HttpHandler;
+import com.henrik.http.pool.ThreadHandlerPool;
 import com.henrik.http.utils.XMLUtil;
 
 /**  
@@ -99,7 +100,8 @@ public class Server implements Runnable {
 						if(requestHeader.length() > 0) {
 							logger.info("该请求的头格式为\r\n" + requestHeader);
 							logger.info("启动了子线程..");
-							new Thread(new HttpHandler(requestHeader, key)).start();
+							//new Thread(new HttpHandler(requestHeader, key)).start();
+							ThreadHandlerPool.addTask(new HttpHandler(requestHeader, key));
 						}
 					} else if (key.isWritable()) {
 						//该key有Write事件
